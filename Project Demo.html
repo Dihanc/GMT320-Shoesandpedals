@@ -37,6 +37,11 @@
                     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
 
+            var popup = L.popup()
+                .setLatLng([-25.754544, 28.231482])
+                .setContent("University of Pretoria.")
+                .openOn(map);
+
             var mylayer = L.tileLayer.wms("http://mygeoserver.co.za:8080/geoserver/workspace/wms", {
                     layers: 'workspace:mylayer',
                     format: 'image/png',
