@@ -72,41 +72,48 @@
 
             var control = L.control.layers(baseMaps).addTo(map);
 
-            var popup = L.popup()
-                    .setLatLng([-25.754544, 28.231482])
-                    .setContent("University of Pretoria.")
-                    .openOn(map);
 
-            // Styling the geojson layer
-            function style(feature) {
-            return {
-                    radius: 5,
-                    weight: 2,
-                    opacity: 1,
-                    color: 'white',
-                    dashArray: '3',
-                    fillOpacity: 0.7
-                };
-                }
+			/*var owsrootUrl = 'http://localhost:8080/geoserver/GMT320/wms';
 
-            // loading GeoJSON file - Here my html and Gates.geojson file resides in same folder
-            $.getJSON("http://localhost:8080/geoserver/GMT320/ows?", function (data) { createOverlay(data, "Gates") });
-              
+			var defaultParameters = {
+				service : 'WMS',
+				version : '2.0.0',
+				request : 'GetFeature',
+				typeName : 'GMT320:gates',
+				count : '1000',
+				outputFormat : 'text/javascript',
+				format_options : 'callback:getJsonBook',    
+				SrsName : 'EPSG:4326'
+			};
 
-            // add GeoJSON layer to the map once the file is loaded
-            function createOverlay(data, layerName) {
-            var datalayer = L.geoJSON(data, {
-				style: style,
-                onEachFeature: function (feature, coordinates) {
-                        return L.bindPopup(feature.properties.gate_number_or_name);
-                }
-            }).addTo(map);
-            control.addOverlay(datalayer, layerName); 
-			
-			// Add the layer to the Layer Control.
-            map.fitBounds(datalayer.getBounds());
-            }
-          
+			var parameters = L.Util.extend(defaultParameters);
+			var URL = owsrootUrl + L.Util.getParamString(parameters);
+
+			var WMSLayer = null;
+			var ajax = $.ajax({
+				url : URL,
+				dataType : 'jsonp',
+				jsonpCallback : 'getJson',
+				success : function (response) {
+					WMSLayer = L.geoJson(response, {
+						pointToLayer: function (feature) {
+							return {
+								stroke: false,
+								fillColor: '#36ff46',
+								fillOpacity: 80
+							};
+						},
+					}).addTo(map);
+			    }
+			});*/
+
+			//Create Gates layer
+			var new_map =  L.tileLayer.wms('http://localhost:8080/geoserver/GMT320/wms?' , { layers: 'gates', format: 'image/png',transparent: true}).addTo(map)
+			//Make gates layer interactive (Displaying gate name)
+
+
+			//Create Building footprint layer
+			var new_map =  L.tileLayer.wms('http://localhost:8080/geoserver/GMT320/wms?' , { layers: 'building_footprint', format: 'image/png',transparent: true}).addTo(map)
         </script>
 	</body>
 </html>
