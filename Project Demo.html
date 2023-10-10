@@ -20,7 +20,7 @@
 				margin: 0;
 			}
 			.leaflet-container {
-				height: 500px;
+				height: 100%;
 				width: 100%;
 				max-width: 100%;
 				max-height: 100%;
@@ -64,12 +64,21 @@
             var map = L.map('map',{layers: [osmMap]}).setView([-25.754544, 28.231482], 16);
 
 			//Create Gates overlayer
-			var gate =  L.tileLayer.wms('http://localhost:8080/geoserver/GMT320/wms?' , { layers: 'gates', format: 'image/png',transparent: true}).addTo(map)
+			var gate =  L.tileLayer.wms('http://localhost:8080/geoserver/GMT320/wms?' , {
+				layers: 'gates', 
+				format: 'image/png',
+				transparent: true
+			}).addTo(map);
+
 			//Make gates layer interactive (Displaying gate name)
-			
+
 
 			//Create Building footprint overlayer
-			var building =  L.tileLayer.wms('http://localhost:8080/geoserver/GMT320/wms?' , { layers: 'building_footprint', format: 'image/png',transparent: true}).addTo(map)
+			var building =  L.tileLayer.wms('http://localhost:8080/geoserver/GMT320/wms?' , { 
+				layers: 'building_footprint', 
+				format: 'image/png',
+				transparent: true
+			}).addTo(map);
                 
             //Base layer definition
             var baseMaps = {
@@ -84,7 +93,6 @@
 			};
 
             var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
-
 
 			/*var owsrootUrl = 'http://localhost:8080/geoserver/GMT320/wms';
 
