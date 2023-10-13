@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#header {
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+}
+
+#company-info {
+    display: flex;
+    align-items: center;
+}
+
+#company-logo {
+    max-width: 50px;
+    max-height: 50px;
+    margin-right: 20px;
+}
+
+#company-name {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#company-info-button a {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+h1 {
+    font-size: 40px;
+    margin-top: 0px;
+    text-align: center;
+}
+
+p {
+    font-size: 25px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+address {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+address p {
+    font-size: 25px;
+    margin: 5px;
+}
+
+#company-info-background {
+    background-color: #c9c9c9;
+}
+a:hover {
+    color: blue;
+    text-decoration: none;
+    font-weight: bold;
+  }
