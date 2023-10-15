@@ -10,6 +10,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 5px;
+    height: 60px;
 }
 
 #company-info {
@@ -29,40 +30,50 @@ body {
     font-family: 'Montserrat', sans-serif;
 }
 
+#company-info-button {
+    overflow: hidden;
+    background-color: #333;
+}
+
 #company-info-button a {
-    background-color: #007BFF;
+    float: right;
+    font-size: 25px;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
 }
 
 h1 {
     font-size: 40px;
+    color: white;
     margin-top: 0px;
     text-align: center;
 }
 
 p {
-    font-size: 25px;
-    margin-top: 20px;
+    font-size: 28px;
+    color: white;
+    margin: 20px;
     margin-bottom: 5px;
 }
 
 address {
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
-    margin-bottom: 5px;
+    margin: 20px;
 }
 
 address p {
-    font-size: 25px;
+    font-size: 28px;
     margin: 5px;
 }
 
 #company-info-background {
-    background-color: #c9c9c9;
+    background-image: url(about_background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 a:hover {
     color: blue;
