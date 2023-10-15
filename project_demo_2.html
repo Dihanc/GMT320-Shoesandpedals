@@ -53,7 +53,7 @@
 		});			
 
         //Create map
-        var map = L.map('map',{layers: [osmMap]}).setView([-25.754544, 28.231482], 16);
+        var map = L.map('map',{layers: [osmMap]}).setView([-25.753889, 28.231111], 17);
 
 		//Create Gates overlayer
 		var gate =  L.tileLayer.wms('http://localhost:8080/geoserver/GMT320/wms?' , {
@@ -93,5 +93,9 @@
         var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
 
     </script>
+
+    <footer style="position: fixed; bottom: 0; font-size: 16px;">
+        <a href="company_information.html">&copy;</a> 2023 Shoes & Pedals. All rights reserved.
+    </footer>
 </body>
 </html>
