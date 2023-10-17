@@ -6,6 +6,7 @@
     <title>Hatfield Campus Navigation Map</title>
 
     <!-- Add Leaflet CSS and JavaScript links -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
     <link rel="stylesheet" href="project_demo_2_style.css"/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
@@ -26,73 +27,7 @@
     <div id="map"></div>
 
     <!-- JavaScript for Leaflet Map and Button Functionality -->
-    <script>
-        //OSM tiles attribution and URL
-		var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-		var osmURL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-		var osmAttrib = '&copy; ' + osmLink;
-
-		//ESRI World Imagery tiles attribution and URL
-		var cartoLink = '<a href="http://cartodb.com/attributions">EsriWorldImagery</a>';
-		var cartoURL = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-		var cartoAttrib = ' &copy; ' + cartoLink + ' &copy; ' + osmLink;
-
-		//Stamen Toner tiles attribution and URL
-		var stamenURL = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.{ext}';
-		var stamenAttrib = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-
-		//Create map tiles
-		var osmMap = L.tileLayer(osmURL, {attribution: osmAttrib});
-		var cartoMap = L.tileLayer(cartoURL, {attribution: cartoAttrib});
-		var stamenMap = L.tileLayer(stamenURL,{
-			attribution: stamenAttrib,
-			subdomains: 'abcd',
-			minZoom: 0,
-			maxZoom: 20,
-			ext: 'png'
-		});			
-
-        //Create map
-        var map = L.map('map',{layers: [osmMap]}).setView([-25.753889, 28.231111], 17);
-
-		//Create Gates overlayer
-		var gate =  L.tileLayer.wms('http://localhost:8080/geoserver/GMT320/wms?' , {
-			layers: 'gates', 
-			format: 'image/png',
-			transparent: true
-		}).addTo(map);
-
-
-		//Create Building footprint overlayer
-		var building =  L.tileLayer.wms('http://localhost:8080/geoserver/GMT320/wms?' , { 
-			layers: 'building_footprint', 
-			format: 'image/png',
-			transparent: true
-		}).addTo(map);
-
-		//Create Bike Racks overlayer
-		var bikeracks =  L.tileLayer.wms('http://localhost:8080/geoserver/GMT320/wms?' , { 
-			layers: 'bikeracks', 
-			format: 'image/png',
-			transparent: true
-		}).addTo(map);
-                
-        //Base layer definition
-        var baseMaps = {
-			"OpenStreetMap": osmMap,
-			"Esri World Imagery": cartoMap,
-			"Statem Toner": stamenMap
-		};
-
-		var overlayMaps = {
-			"Gates": gate,
-			"Buldings": building,
-			"Bike Racks": bikeracks
-		};
-
-        var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
-
-    </script>
+    <script src="project_demo_2_function.js"></script>
 
     <footer style="position: fixed; bottom: 0; font-size: 16px;">
         <a href="company_information.html">&copy;</a> 2023 Shoes & Pedals. All rights reserved.
