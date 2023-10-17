@@ -75,8 +75,19 @@ address p {
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
+
+a {
+    color: greenyellow;
+}
 a:hover {
     color: blue;
     text-decoration: none;
     font-weight: bold;
+  }
+
+  #f-name {
+    position: fixed; 
+    bottom: 0; 
+    font-size: 16px; 
+    color: white;
   }
