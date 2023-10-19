@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
     <link rel="stylesheet" href="project_demo_2_style.css"/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
 </head>
 <body>
     <!-- Header section with company name, logo, and info button -->
@@ -24,13 +25,19 @@
     </div>
 
     <!-- Leaflet Map Section -->
-    <div id="map"></div>
+    <div id="map-container">
+        <div id="map"></div>
+        <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+        <div class="additional-container">
+            <img src="graph_2.jpg" alt="Image 1"/>
+            <img src="gates_graph.jpg" alt="Image 2"/>
+            <footer id="footer">
+                &copy;<a href="company_information.html">2023 Shoes & Pedals</a>. All rights reserved.
+            </footer>
+        </div>
+    </div>
 
     <!-- JavaScript for Leaflet Map and Button Functionality -->
     <script src="project_demo_2_function.js"></script>
-
-    <footer style="position: fixed; bottom: 0; font-size: 16px;">
-        <a href="company_information.html">&copy;</a> 2023 Shoes & Pedals. All rights reserved.
-    </footer>
 </body>
 </html>
