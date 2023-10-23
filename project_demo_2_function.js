@@ -8,32 +8,29 @@ var cartoLink = '<a href="http://cartodb.com/attributions">EsriWorldImagery</a>'
 var cartoURL = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
 var cartoAttrib = ' &copy; ' + cartoLink + ' &copy; ' + osmLink;
 
-//Stamen Toner tiles attribution and URL
-var stamenURL = 'http://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.{ext}';
-var stamenAttrib = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-
 //Create map tiles
 var osmMap = L.tileLayer(osmURL, {attribution: osmAttrib});
 var cartoMap = L.tileLayer(cartoURL, {attribution: cartoAttrib});
-var stamenMap = L.tileLayer(stamenURL,{
-	attribution: stamenAttrib,
+var darkMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
 	subdomains: 'abcd',
-	minZoom: 0,
-	maxZoom: 20,
-	ext: 'png'
-});			
+	maxZoom: 20
+});	
 
 //Create map
 var map = L.map('map',{layers: [osmMap]}).setView([-25.753889, 28.231111], 16);
 
+//Find current location
 L.control.locate().addTo(map);
 
-/*/Create Gates overlayer
+
+//Create Gates overlayer
 var gate =  L.tileLayer.wms('http://localhost:8080/geoserver/GMT320/wms?' , {
 	layers: 'gates', 
 	format: 'image/png',
 	transparent: true
-}).addTo(map);*/
+}).addTo(map);
+
 
 //WFS
 
@@ -48,7 +45,7 @@ var defaultGates = {
   service: "WFS",
   version: "1.0.0",
   request: "GetFeature",
-  typeName: "GMT320:gates",
+  typeName: "GMT320:cleanbuildins",
   outputFormat: "text/javascript",
   format_options: "callback:getJson",
   SrsName: "EPSG:4326",
@@ -83,11 +80,11 @@ var ajax_gates = $.ajax({
 				//console.log(feature.properties);
 
 				const popupInfo = `
-					<b>Name: </b>${feature.properties.gate_number_or_name} <br>
+					<b>Name: </b>${feature.properties.name} <br>
 				`;
 
 				let marker = new L.marker(latlng, {
-					title: feature.properties.gate_number_or_name,
+					title: feature.properties.name,
 				})
 				.bindPopup(popupInfo)
 				.openPopup();
@@ -97,7 +94,7 @@ var ajax_gates = $.ajax({
 				// return marker;
 			},
 			onEachFeature: function (feature, featureLayer) {
-				featureLayer.bindPopup(feature.properties.gate_number_or_name);
+				featureLayer.bindPopup(feature.properties.name);
 			},
 		});
 	},
@@ -108,8 +105,7 @@ var defaultParameters = {
   	service: 'WFS',
   	version: '2.0.0',
   	request: 'GetFeature',
-  	typeName: 'gates',
-  	count : '100',
+  	typeName: 'GMT320:cleanbuildings',
   	outputFormat: 'text/javascript',
   	format_options : 'callback:getJson',    
  	SrsName : 'EPSG:4326'
@@ -132,7 +128,7 @@ var ajax = $.ajax({
                 };
             },
             onEachFeature: function (feature, layer) {
-                var name = 'Name: ' + feature.properties.gate_number_or_name;
+                var name = 'Name: ' + feature.properties.name;
                 layer.bindPopup(name);
             }
         }).addTo(map);
@@ -140,12 +136,12 @@ var ajax = $.ajax({
 });*/
 
 
-//Create Building footprint overlayer
+/*/Create Building footprint overlayer
 var building =  L.tileLayer.wms('http://localhost:8080/geoserver/GMT320/wms?' , { 
 	layers: 'cleanbuildings', 
 	format: 'image/png',
 	transparent: true
-}).addTo(map);
+}).addTo(map);*/
 
 //Create Bike Racks overlayer
 var bikeracks =  L.tileLayer.wms('http://localhost:8080/geoserver/GMT320/wms?' , { 
@@ -158,12 +154,12 @@ var bikeracks =  L.tileLayer.wms('http://localhost:8080/geoserver/GMT320/wms?' ,
 var baseMaps = {
 	"OpenStreetMap": osmMap,
 	"Esri World Imagery": cartoMap,
-	"Statem Toner": stamenMap
+	"Carto Dark Matter": darkMap
 };
 
 var overlayMaps = {
-	"Gates": gatesLayerGroup,
-	"Buldings": building,
+	"Gates": gate,
+	"Buldings": gatesLayerGroup,
 	"Bike Racks": bikeracks
 };
 
@@ -173,6 +169,12 @@ var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
 var scaleBar = L.control.scale({position: 'bottomleft'});
 map.addControl(scaleBar);
 
+// Style the scale bar using CSS
+scaleBar.getContainer().style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+scaleBar.getContainer().style.color = 'black';
+scaleBar.getContainer().style.fontSize = '14px';
+scaleBar.getContainer().style.fontWeight = 'bold';
+
 // Add a north arrow to the map
 var northArrow = L.control({position: 'bottomleft'});
 northArrow.onAdd = function(map) {
@@ -180,18 +182,60 @@ northArrow.onAdd = function(map) {
     div.style.backgroundColor = 'white';
     div.style.border = 'solid black 1px';
     div.style.borderRadius = '50%';
- div.style.width = '40px';
-    div.style.height = '40px';
+ div.style.width = '60px';
+    div.style.height = '60px';
     div.style.cursor = 'pointer';
     div.onclick = function() {
         map.setView([-25.753889, 28.231111], 16);
     };
     var arrow = document.createElement('img');
     arrow.src = 'northarrow_image.jpeg';
-    arrow.style.width = '30px';
-    arrow.style.height = '30px';
+    arrow.style.width = '45px';
+    arrow.style.height = '45px';
     arrow.style.margin = '5px';
     div.appendChild(arrow);
     return div;
 };
 northArrow.addTo(map);
+
+// Create an HTML element for the legend
+var legend = L.control({
+	position: 'topright',
+	width: 200,
+ });
+
+// Define the legend content and style
+legend.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'info legend');
+    var labels = [];
+    var categories = ['Gate', 'Building', 'Bike Rack'];
+
+    // Add legend labels and corresponding colors
+    for (var i = 0; i < categories.length; i++) {
+        div.innerHTML +=
+			'<div class="legend-item">' +
+				'<img class="legend-image" src="' + getImageSource(categories[i]) + '">' +
+				'<span class="legend-label">' + categories[i] + '</span>' +
+			'</div>';
+    }
+
+    return div;
+};
+
+// Function to set the color for legend items
+function getImageSource(category) {
+    // Define colors for each category
+    switch (category) {
+        case 'Gate':
+            return 'gates_legend.png';
+        case 'Building':
+            return 'building_legend.png';
+        case 'Bike Rack':
+            return 'bikeracks_legend.png';
+        default:
+            return 'company_logo.png';
+    }
+}
+
+// Add the legend to the map
+legend.addTo(map);
