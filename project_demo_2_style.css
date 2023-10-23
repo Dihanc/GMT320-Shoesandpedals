@@ -64,7 +64,7 @@ a:hover {
     height: 680px;
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: gray;
     align-items: center;
 }
 
@@ -82,13 +82,46 @@ a:hover {
     object-fit: cover;
 }
 
-#footer {
-    position: fixed;
-    bottom: 0;
-    right: 0; 
-    font-size: 16px;
+footer {
+    background-color: #333;
+    text-align: end;
+    color: white;
 }
 
 #footer a {
     color:cyan;
 }
+
+/* CSS for the legend */
+.info.legend {
+    background: white; /* Set the background color to white */
+    padding: 10px;
+    border: 2px solid #000000;
+    border-radius: 5px;
+}
+
+.legend-item {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+/* Define the color for the legend item markers */
+.legend-image {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+}
+
+.legend-label {
+    flex-grow: 1;
+    text-align: left;
+    font-size: 13px;
+}
+
+.leaflet-control-custom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
