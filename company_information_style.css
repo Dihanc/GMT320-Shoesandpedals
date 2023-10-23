@@ -56,6 +56,7 @@ p {
     color: white;
     margin: 20px;
     margin-bottom: 5px;
+    text-align: center;
 }
 
 address {
@@ -72,6 +73,7 @@ address p {
 #company-info-background {
     background-image: url(about_background.jpg);
     background-size: cover;
+    height: fit-content;
     background-repeat: no-repeat;
     background-attachment: fixed;
 }
@@ -83,11 +85,25 @@ a:hover {
     color: blue;
     text-decoration: none;
     font-weight: bold;
-  }
+}
+
+footer {
+    background-color: #333;
+    text-align: end;
+    color: white;
+}
+
+#footer a {
+    color:cyan;
+}
 
   #f-name {
     position: fixed; 
     bottom: 0; 
     font-size: 16px; 
     color: white;
+  }
+
+  team p {
+    text-align: justify;
   }
