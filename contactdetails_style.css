@@ -1,0 +1,104 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#header {
+    background-color: #333;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    height: 60px;
+}
+
+#company-info {
+    display: flex;
+    align-items: center;
+}
+
+#company-logo {
+    max-width: 50px;
+    max-height: 50px;
+    margin-right: 20px;
+}
+
+#company-name {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#company-info-button {
+    overflow: hidden;
+    background-color: #333;
+}
+
+#company-info-button a {
+    float: right;
+    font-size: 25px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+h1 {
+    font-size: 40px;
+    color: white;
+    margin-top: 0px;
+    text-align: center;
+}
+
+p {
+    font-size: 28px;
+    color: white;
+    margin: 20px;
+    margin-bottom: 5px;
+}
+
+address {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+address p {
+    font-size: 28px;
+    margin: 5px;
+}
+
+#company-info-background {
+    background-image: url(about_background.jpg);
+    background-size: cover;
+    height: 680px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+a {
+    color: greenyellow;
+}
+a:hover {
+    color: blue;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer {
+    background-color: #333;
+    text-align: end;
+    color: white;
+}
+
+#footer a {
+    color:cyan;
+}
+
+  #f-name {
+    position: fixed; 
+    bottom: 0; 
+    font-size: 16px; 
+    color: white;
+  }
