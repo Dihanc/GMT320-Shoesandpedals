@@ -54,13 +54,13 @@ a:hover {
     height: 680px;
 }
 #map {
-    flex: 75%;
+    flex: 70%;
     height: 680px;
     border-right: 1px solid #000000;
 }
 
 .additional-container {
-    flex: 25%;
+    flex: 30%;
     height: 680px;
     display: flex;
     flex-direction: column;
@@ -69,7 +69,7 @@ a:hover {
 }
 
 .additional-container img {
-    max-height: 50%;
+    height: 50%;
     width: fit-content;
     object-fit: cover;
 }
@@ -123,5 +123,4 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
+}
