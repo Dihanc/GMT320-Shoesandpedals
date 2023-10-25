@@ -11,6 +11,25 @@
     <link rel="stylesheet" href="project_demo_2_style.css"/>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.css" />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="bikerackgraph_style.css">
+
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-search/3.0.3/leaflet-search.src.js"
+        integrity="sha512-HsHDqbWBSiOrsb1U0cnIaI9UelfHgVECuDy1kFH2qDG86r96+s5cEIDKwr1oOefKnC/2a/caa8Yja1eZjGAqHQ=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    ></script>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-search/3.0.3/leaflet-search.src.css"
+        integrity="sha512-im9l+yLwl0w9hf9+XlK/lN9za2l2J4SmWpWsQP5IRPPxXtdruhJmTA7/WdQuxJRDVOYiENftSyDxXwxXAXiTtA=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="leaflet-search.src.css" />
+    <script src="leaflet-search.src.js"></script>
+
 </head>
 <body>
     <!-- Header section with company name, logo, and info button -->
@@ -29,12 +48,20 @@
     <!-- Leaflet Map Section -->
     <div id="map-container">
         <div id="map"></div>
+
         <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
-        <div class="additional-container">
-            <img src="graph_2.jpg" alt="Image 1"/>
-            <img src="gates_graph.jpg" alt="Image 2"/>
+
+        <div id="bikeRackChart" class="additional-container">
+            <script src="bikerackgraph.js"> alt="Image 2"</script>
+            <img src="gates_graph.jpg" alt="Image 1" style="height: 100%;"/>
         </div>
     </div>
+
+    <!--<div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search...">
+        <button id="search-button">Search</button>
+    </div>-->
+
     <div>
         <footer id="footer">
             &copy;2023 <a href="company_information.html">Shoes & Pedals</a>. All rights reserved.
@@ -43,5 +70,6 @@
 
     <!-- JavaScript for Leaflet Map and Button Functionality -->
     <script src="project_demo_2_function.js"></script>
+    
 </body>
 </html>
