@@ -24,6 +24,9 @@ var map = L.map('map',{layers: [osmMap]}).setView([-25.753889, 28.231111], 16);
 L.control.locate().addTo(map);
 
 
+
+
+
 //Create Gates overlayer
 var gate =  L.tileLayer.wms('http://localhost:8080/geoserver/GMT320/wms?' , {
 	layers: 'gates', 
@@ -197,6 +200,17 @@ northArrow.onAdd = function(map) {
     return div;
 };
 northArrow.addTo(map);
+
+//Search bar
+var controlSearch = new L.Control.Search({
+	position: "topleft",
+	layer: markersLayer,
+	initial: false,
+	zoom: 20,
+	marker: false,
+});
+
+map.addControl(controlSearch);
 
 // Create an HTML element for the legend
 var legend = L.control({
