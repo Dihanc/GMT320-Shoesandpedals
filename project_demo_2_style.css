@@ -40,7 +40,7 @@ body {
 #map {
     flex: 70%;
     height: 680px;
-    border-right: 1px solid #000000;
+    border-right: 2px solid #000000;
 }
 
 .additional-container {
@@ -92,8 +92,8 @@ footer {
 
 /* Define the color for the legend item markers */
 .legend-image {
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
     margin-right: 8px;
 }
 
@@ -107,4 +107,57 @@ footer {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* Home button */
+.leaflet-control-resetview-image {
+    background-image: url('./home_icon.png');
+    background-size: 20px 20px;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 20px;
+    height: 20px;
+}
+
+/* Building search bar */
+.search-bar {
+    position: fixed;
+    top: 10%;
+    left: 35%;
+    transform: translateX(-50%);
+    width: 600px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    border: #333 solid 2px;
+    z-index: 1;
+}
+
+#search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 10px;
+}
+
+#search-button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.search-results-panel {
+    position: fixed;
+    top: 10%;
+    left: 35%;
+    transform: translateX(-50%);
+    width: 300px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: none;
+    max-height: 100vh;
+    overflow-y: auto;
+    z-index: 1000;
 }
