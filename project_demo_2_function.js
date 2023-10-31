@@ -20,6 +20,43 @@ var darkMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y
 //Create map
 var map = L.map('map',{layers: [osmMap]}).setView([-25.753889, 28.231111], 16);
 
+//Reset view
+!function(t,e){
+	"function"==typeof define&&define.amd?define(["leaflet"],t):"object"==typeof exports&&(module.exports=t(require("leaflet"))),void 0!==e&&e.L&&(e.L.Control.ResetView=t(L))
+}
+(function(e){return ResetView=e.Control.extend({
+	options:{position:"topleft",title:"Reset view",	latlng:null,zoom:null},
+	onAdd:function(t){
+		const image = document.createElement('img');
+        image.src = './home_icon.png';
+
+		return this._map=t,
+		this._container=e.DomUtil.create("div","leaflet-control-resetview leaflet-bar leaflet-control"),
+		this._link=e.DomUtil.create("a","leaflet-bar-part leaflet-bar-part-single",this._container),
+
+		this._link.appendChild(e.DomUtil.create('span', 'leaflet-control-resetview-image')),
+
+
+        // Add a CSS class to the _link element to style the image
+        this._link.classList.add('leaflet-control-resetview-image'),
+
+		this._link.title=this.options.title,this._link.href="#",this._link.setAttribute("role","button"),
+		this._icon=e.DomUtil.create("span","leaflet-control-resetview-icon",this._link),
+		e.DomEvent.on(this._link,"click",this._resetView,this),
+		this._container
+	},
+		onRemove:function(t){e.DomEvent.off(this._link,"click",this._resetView,this)},
+		_resetView:function(t){this._map.setView(this.options.latlng,this.options.zoom)}
+}),
+e.control.resetView=function(t){return new ResetView(t)},ResetView},window
+);
+L.control.resetView({
+	position: "topleft",
+	title: "Reset view",
+	latlng: L.latLng([-25.753889, 28.231111]),
+	zoom: 16,
+}).addTo(map);
+
 //Find current location
 L.control.locate().addTo(map);
 
@@ -42,6 +79,32 @@ var defaultGates = {
 };
 var parameters_gates = L.Util.extend(defaultGates);
 var URL_gates = owsrootUrl + L.Util.getParamString(parameters_gates);
+
+/*/ Defining Walking gates parameters
+var defaultGates = {
+	service: "WFS",
+	version: "1.0.0",
+	request: "GetFeature",
+	typeName: "GMT320:gates",
+	outputFormat: "application/json",//"text/javascript",
+	format_options: "callback:getJson",
+	SrsName: "EPSG:4326",
+  };
+  var parameters_gates = L.Util.extend(defaultGates);
+  var URL_gates = owsrootUrl + L.Util.getParamString(parameters_gates);*/
+
+/*/ Defining Cycling Walking gates parameters
+var defaultCGates = {
+	service: "WFS",
+	version: "1.0.0",
+	request: "GetFeature",
+	typeName: "GMT320:cyclinggates",
+	outputFormat: "application/json",//"text/javascript",
+	format_options: "callback:getJson",
+	SrsName: "EPSG:4326",
+  };
+  var parameters_cgates = L.Util.extend(defaultCGates);
+  var URL_cgates = owsrootUrl + L.Util.getParamString(parameters_cgates);*/
 
 // Defining bike racks parameters
 var defaultBikeracks = {
@@ -72,6 +135,10 @@ var URL_buildings = owsrootUrl + L.Util.getParamString(parameters_buildings);
 // Create an empty layer for gates
 var gatesLayer = null;
 let gatesLayerGroup = new L.LayerGroup().addTo(map);
+
+/*/ Create an empty layer for cycling gates
+var cgatesLayer = null;
+let cgatesLayerGroup = new L.LayerGroup().addTo(map);*/
 
 // Create an empty layer for bike racks
 var bikeracksLayer = null;
@@ -110,9 +177,9 @@ $.ajax({
 				`;
 
 				const imageIcon = new L.Icon({
-					iconUrl: 'http://127.0.0.1:5500/gates_legend.png',
+					iconUrl: 'http://127.0.0.1:5500/gates_legend2.png',
 					iconSize: [22,22],
-					iconAnchor: [11, 11],
+					iconAnchor: [11, 5],
 				});
 
 				let marker = new L.marker(latlng, {
@@ -136,6 +203,60 @@ $.ajax({
     }
 });
 
+/*/ this is the ajax request, we are using the jsonp option. --> CYCLING GATES
+$.ajax({
+	url: URL_cgates,
+	dataType: "json",
+	jsonpCallback: "getJson",
+
+	//In the event of success...
+	success: function (response) {
+		console.log(response);
+		cgatesLayer = L.geoJson(response, {
+			style: function (feature) {
+				return {
+					stroke: false,
+                    fillColor: '#36ff46',
+                    fillOpacity: 50
+				};
+			},
+			pointToLayer: function (feature, latlng) {
+
+				//console.log(feature.properties);
+
+				const popupInfo = `
+					<b>Gate name: </b>${feature.properties.gate_number_or_name} <br>
+					<b>Accessible on foot: </b>${feature.properties.walking_student_accessible} <br>
+					<b>Accessible on bicycle: </b>${feature.properties.cycling_student_accessible} <br>
+				`;
+
+				const imageIcon = new L.Icon({
+					iconUrl: 'http://127.0.0.1:5500/gates_legend2.png',
+					iconSize: [22,22],
+					iconAnchor: [11, 5],
+				});
+
+				let marker = new L.marker(latlng, {
+					icon: imageIcon,
+					title: feature.properties.gate_number_or_name,
+				})
+				.bindPopup(popupInfo)
+				.openPopup();
+
+				markersLayer.addLayer(marker);
+				cgatesLayerGroup.addLayer(marker);
+				// return marker;
+			},
+			onEachFeature: function (feature, featureLayer) {
+				featureLayer.bindPopup(feature.properties.gate_number_or_name);
+			},
+		});
+	},
+	error: function(xhr){
+        console.log('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
+    }
+});*/
+
 // this is the ajax request, we are using the jsonp option. --> BIKE RACKS
 $.ajax({
 	url: URL_bikeracks,
@@ -155,9 +276,9 @@ $.ajax({
 				`;
 
 				const imageIcon = new L.Icon({
-					iconUrl: 'http://127.0.0.1:5500/bikeracks_legend.png',
+					iconUrl: 'http://127.0.0.1:5500/bikeracks_legend2.png',
 					iconSize: [22,22],
-					iconAnchor: [11, 11],
+					iconAnchor: [11, 5],
 				});
 
 				let marker = new L.marker(latlng, {
@@ -190,8 +311,12 @@ $.ajax({
 	//In the event of success...
 	success: function (response) {
 		console.log(response);
+
+		// Create a new layer group for the polygon layers
+		const buildingsPolygonLayerGroup = new L.LayerGroup();
+
 		buildingsLayer = L.geoJson(response, {
-			pointToLayer: function (feature, latlng) {
+			/*pointToLayer: function (feature, latlng) {
 
 				//console.log(feature.properties);
 
@@ -199,20 +324,29 @@ $.ajax({
 					<b>Building name: </b>${feature.properties.name} <br>
 				`;
 
-				let polygon = new L.polygon(feature.geometry.coordinates, {
+				let polygon = new L.polygon(latlng, {
 					title: feature.properties.name,
 				})
 				.bindPopup(popupInfo)
 				.openPopup();
 
-				markersLayer.addLayer(polygon);
-				buildingsLayerGroup.addLayer(polygonr);
-				// return marker;
+				// Add the polygon to the polygon layer group
+				buildingsPolygonLayerGroup.addLayer(polygon);
+				return marker;
+			},*/
+			style: function (feature) {
+				return {
+					stroke: '#000000',
+                    fillColor: '#FBDC7A',
+                    fillOpacity: 50
+				};
 			},
 			onEachFeature: function (feature, featureLayer) {
 				featureLayer.bindPopup(feature.properties.name);
 			},
-		});
+		}).addTo(map);
+		// Add the polygon layer group to the map
+		map.addLayer(buildingsPolygonLayerGroup);
 	},
 	error: function(xhr){
         console.log('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
@@ -282,7 +416,6 @@ var controlSearch = new L.Control.Search({
 	zoom: 20,
 	marker: false,
 });
-
 map.addControl(controlSearch);
 
 // Create an HTML element for the legend
@@ -314,11 +447,11 @@ function getImageSource(category) {
     // Define colors for each category
     switch (category) {
         case 'Gate':
-            return 'gates_legend.png';
+            return 'gates_legend2.png';
         case 'Building':
             return 'building_legend.png';
         case 'Bike Rack':
-            return 'bikeracks_legend.png';
+            return 'bikeracks_legend2.png';
         default:
             return 'company_logo.png';
     }
@@ -326,3 +459,196 @@ function getImageSource(category) {
 
 // Add the legend to the map
 legend.addTo(map);
+
+
+
+//Add building search bar
+// Add event listener to the search button
+document.getElementById('search-button').addEventListener('click', performSearch); // Perform the search
+
+function getSearchResultsFromGeoServer(searchTerm) {
+	var owsrootUrl = "http://localhost:8080/geoserver/GMT320/ows";
+
+	// Defining gates parameters
+	var defaultGates = {
+	service: "WFS",
+	version: "1.0.0",
+	request: "GetFeature",
+	typeName: "GMT320:gates",
+	outputFormat: "application/json",//"text/javascript",
+	format_options: "callback:getJson",
+	SrsName: "EPSG:4326",
+	};
+	var parameters_gates = L.Util.extend(defaultGates);
+	var URL_gates = owsrootUrl + L.Util.getParamString(parameters_gates);
+
+	// Create an empty layer for gates
+	var gatesLayer = null;
+	let gatesLayerGroup = new L.LayerGroup().addTo(map);
+
+	// this is the ajax request, we are using the jsonp option. --> GATES
+	$.ajax({
+		url: URL_gates,
+		dataType: "json",
+		jsonpCallback: "getJson",
+
+		//In the event of success...
+		success: function (response) {
+			console.log(response);
+			gatesLayer = L.geoJson(response, {
+				style: function (feature) {
+					return {
+						stroke: false,
+						fillColor: '#36ff46',
+						fillOpacity: 50
+					};
+				},
+				pointToLayer: function (feature, latlng) {
+
+					//console.log(feature.properties);
+
+					const popupInfo = `
+						<b>Gate name: </b>${feature.properties.gate_number_or_name} <br>
+						<b>Accessible on foot: </b>${feature.properties.walking_student_accessible} <br>
+						<b>Accessible on bicycle: </b>${feature.properties.cycling_student_accessible} <br>
+					`;
+
+					const imageIcon = new L.Icon({
+						iconUrl: 'http://127.0.0.1:5500/gates_legend2.png',
+						iconSize: [22,22],
+						iconAnchor: [11, 5],
+					});
+
+					let marker = new L.marker(latlng, {
+						icon: imageIcon,
+						title: feature.properties.gate_number_or_name,
+					})
+					.bindPopup(popupInfo)
+					.openPopup();
+
+					markersLayer.addLayer(marker);
+					gatesLayerGroup.addLayer(marker);
+					// return marker;
+				},
+				onEachFeature: function (feature, featureLayer) {
+					featureLayer.bindPopup(feature.properties.gate_number_or_name);
+				},
+			});
+		},
+		error: function(xhr){
+			console.log('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
+		}
+	});
+};
+// Function to perform the search and display results
+function performSearch() {
+    const searchTerm = document.getElementById('search-input').value;
+    
+    // Replace this with your code to search the GeoServer database
+    // Example: You can make an AJAX request to the GeoServer API
+	// specify your root URL...
+	var owsrootUrl = "http://localhost:8080/geoserver/GMT320/ows";
+
+	// Defining gates parameters
+	var defaultGates = {
+	service: "WFS",
+	version: "1.0.0",
+	request: "GetFeature",
+	typeName: "GMT320:gates",
+	outputFormat: "application/json",//"text/javascript",
+	format_options: "callback:getJson",
+	SrsName: "EPSG:4326",
+	};
+	var parameters_gates = L.Util.extend(defaultGates);
+	var URL_gates = owsrootUrl + L.Util.getParamString(parameters_gates);
+
+	// Create an empty layer for gates
+	var gatesLayer = null;
+	let gatesLayerGroup = new L.LayerGroup().addTo(map);
+
+	// this is the ajax request, we are using the jsonp option. --> GATES
+	$.ajax({
+		url: URL_gates,
+		dataType: "json",
+		jsonpCallback: "getJson",
+
+		//In the event of success...
+		success: function (response) {
+			console.log(response);
+			gatesLayer = L.geoJson(response, {
+				style: function (feature) {
+					return {
+						stroke: false,
+						fillColor: '#36ff46',
+						fillOpacity: 50
+					};
+				},
+				pointToLayer: function (feature, latlng) {
+
+					//console.log(feature.properties);
+
+					const popupInfo = `
+						<b>Gate name: </b>${feature.properties.gate_number_or_name} <br>
+						<b>Accessible on foot: </b>${feature.properties.walking_student_accessible} <br>
+						<b>Accessible on bicycle: </b>${feature.properties.cycling_student_accessible} <br>
+					`;
+
+					const imageIcon = new L.Icon({
+						iconUrl: 'http://127.0.0.1:5500/gates_legend2.png',
+						iconSize: [22,22],
+						iconAnchor: [11, 5],
+					});
+
+					let marker = new L.marker(latlng, {
+						icon: imageIcon,
+						title: feature.properties.gate_number_or_name,
+					})
+					.bindPopup(popupInfo)
+					.openPopup();
+
+					markersLayer.addLayer(marker);
+					gatesLayerGroup.addLayer(marker);
+					// return marker;
+				},
+				onEachFeature: function (feature, featureLayer) {
+					featureLayer.bindPopup(feature.properties.gate_number_or_name);
+				},
+			});
+		},
+		error: function(xhr){
+			console.log('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
+		}
+	});
+	// Get the search results from the GeoServer API
+	const searchResults = getSearchResultsFromGeoServer(searchTerm);
+
+	// Display the search results in the search-results panel
+	displaySearchResultsPanel(searchResults);
+}
+// Function to display the results of the search
+function displaySearchResultsPanel(searchResults) {
+	const searchResultsPanel = document.getElementById('search-results-panel');
+	searchResultsPanel.innerHTML = ''; // Clear the search results panel
+  
+	// Iterate over the search results and add them to the search results panel
+	for (const searchResult of searchResults) {
+	  const searchResultElement = document.createElement('div');
+	  searchResultElement.classList.add('search-result');
+  
+	  // Add the search result content to the search result element
+	  searchResultElement.textContent = searchResult.name;
+  
+	  // Append the search result element to the search results panel
+	  searchResultsPanel.appendChild(searchResultElement);
+	}
+  
+	// Display the search results panel
+	searchResultsPanel.style.display = 'block';
+}
+// Close the search results panel when clicking outside of it
+document.addEventListener('click', function(event) {
+    const searchResultsPanel = document.getElementById('search-results-panel');
+    if (event.target !== searchResultsPanel && event.target !== document.getElementById('search-input')) {
+        searchResultsPanel.style.display = 'none';
+    }
+});
