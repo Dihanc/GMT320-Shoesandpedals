@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
+<html xmlns="https://www.w3.org/1999/xhtml"> 
+<head> 
+<title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<link rel="stylesheet" href="leaflet.css" />
+<link rel="stylesheet" href="leaflet-geojson-selector.css" />
+<link rel="stylesheet" href="style.css" />
+<style type="text/css">
+	
+.leaflet-popup-content {
+	font-size: 12px;
+	white-space: pre;
+}
+
+.geojson-list-item {
+	white-space: nowrap;
+	font-weight: bold;
+	text-transform: capitalize;
+	font-size: 12px;
+}
+
+#geofile {
+	margin: 0 20px;
+	font-size: 16px;
+	border: 2px solid #000000;
+	box-shadow: 0 0 8px #999;
+}
+#geofile option {
+	padding: 4px;
+}
+
+</style>
+</head>
+
+<body>
+<div id="map"></div>
+
+<!--<select id="geofile" size="2" multiple>
+	<option value="cleanbuildings.geojson" selected>cleanbuildings.geojson</option>
+</select>-->
+
+<pre id="selection">&nbsp;</pre>
+
+<script src="leaflet.js"></script>
+<script src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
+<script src="leaflet-geojson-selector.js"></script>
+
+<script>
+	var map = new L.Map('map', {
+			zoomControl: false,
+			layers: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')
+		});
+
+	map.addControl(L.control.zoom({position:'topright'}));
+
+	var geoList = L.control.geoJsonSelector(null, {
+		zoomToLayer: true
+	}).addTo(map);
+	
+	geoList.on('selector:change', function(e) {
+		var jsonObj = $.parseJSON( JSON.stringify(e.layers[0].feature.properties) );
+		var html = 'Selection:<br /><table border="1">';
+		$.each(jsonObj, function(key, value){
+				html += '<tr>';
+				html += '<td>' + key.replace(":", " ") + '</td>';
+				html += '<td>' + value + '</td>';
+				html += '</tr>';
+		});
+		html += '</table>';
+
+		$('.selection').html(html);
+	});
+
+	map.addControl(function() {
+		var c = new L.Control({position:'bottomright'});
+		c.onAdd = function(map) {
+				return L.DomUtil.create('pre','selection');
+			};
+		return c;
+	}());
+
+	// Load the cleanbuildings.geojson layer to the map
+	$.getJSON('cleanbuildings.geojson', function (json) {
+      geoList.reload(L.geoJson(json));
+    });
+
+</script>	
+</body>
+</html>
