@@ -1,0 +1,9 @@
+/* Example styles for the chart container */
+#bikeRackChart {
+    width: 100%;
+    height: 50%;
+    background-color: gray;
+    margin: 0;
+}
+
+
