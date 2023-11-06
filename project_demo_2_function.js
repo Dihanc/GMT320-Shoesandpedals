@@ -96,19 +96,6 @@ var defaultBikeracks = {
 var parameters_bikeracks = L.Util.extend(defaultBikeracks);
 var URL_bikeracks = owsrootUrl + L.Util.getParamString(parameters_bikeracks);
 
-/*/ Defining building parameters
-var defaultBuildings = {
-	service: "WFS",
-	version: "1.0.0",
-	request: "GetFeature",
-	typeName: "GMT320:cleanbuildings",
-	outputFormat: "application/json",
-	format_options: "callback:getJson",
-	SrsName: "EPSG:4326",
-};
-var parameters_buildings = L.Util.extend(defaultBuildings);
-var URL_buildings = owsrootUrl + L.Util.getParamString(parameters_buildings);*/
-
 // Create an empty layer for cycling gates
 var gatesLayer1 = null;
 let gatesLayerGroup1 = new L.LayerGroup().addTo(map);
@@ -120,10 +107,6 @@ let gatesLayerGroup2 = new L.LayerGroup().addTo(map);
 // Create an empty layer for bike racks
 var bikeracksLayer = null;
 let bikeracksLayerGroup = new L.LayerGroup().addTo(map);
-
-/*/ Create an empty layer for buildings
-var buildingsLayer = null;
-let buildingsLayerGroup = new L.LayerGroup().addTo(map);*/
 
 // WFS Ajax requests
 // this is the ajax request, we are using the jsonp option. --> CYCLING GATES
