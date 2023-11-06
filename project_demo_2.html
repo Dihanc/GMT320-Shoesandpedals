@@ -29,9 +29,11 @@
     />
     <link rel="stylesheet" href="leaflet-search.src.css" />
     <script src="leaflet-search.src.js"></script>
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-
+    <!-- Test building search function-->
+    <link rel="stylesheet" href="leaflet.css" />
+    <link rel="stylesheet" href="leaflet-geojson-selector.css" />
 </head>
+
 <body>
     <!-- Header section with company name, logo, and info button -->
     <div id="header">
@@ -45,22 +47,110 @@
     <div id="map-container">
         <div id="map"></div>
 
+        <!-- Building search -->
+        <pre id="selection">&nbsp;</pre>
+
+        <script src="leaflet.js"></script>
+        <script src="https://unpkg.com/jquery@3.3.1/dist/jquery.js"></script>
+        <script src="leaflet-geojson-selector.js"></script>
+
         <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
 
         <div id="bikeRackChart" class="additional-container">
             <script src="bikerackgraph.js"> alt="Image 2"</script>
-            <img src="graph_3.jpg" alt="Image 1" style="height: 100%;"/>
+            <div id="building_image" class="additional-container">
+                <img id="buildingImage" src="" alt="Building Image">
+            </div>
         </div>
     </div>
 
     <div>
         <footer id="footer">
-            &copy; 2023 <a href="https://u21652288.wixsite.com/shoesandpedals/about">Shoes & Pedals</a>. All rights reserved.;
+            &copy; 2023 <a href="https://u21652288.wixsite.com/shoesandpedals">Shoes & Pedals</a>. All rights reserved.;
         </footer>
     </div>
 
+    <!--Test lecture chart-->
+<label for="building_selector">Select a building:</label>
+<select id="building_selector" aria-labelledby="building_selector">
+  <option value="Administration">Administration</option>
+  <option value = "AE Auditorium And Annexe">AE Auditorium And Annexe</option>
+  <option value="Amphitheatre And Musaion">Amphitheatre And Musaion</option>
+  <option value="Aula And Rautenbach Hall">Aula And Rautenbach Hall</option>
+  <option value="Bateman Building">Bateman Building</option>
+  <option value="Botany Building">Botany Building</option>
+  <option value = "Building 5">Building 5</option>
+  <option value = "Building 70">Building 70</option>
+  <option value="Building 71">Building 71</option>
+  <option value="Building 72">Building 72</option>
+  <option value="Building 73">Building 73</option>
+  <option value="Building 74">Building 74</option>
+  <option value="Building 75">Building 75</option>
+  <option value="Building 75B">Building 75</option>
+  <option value="Building 76">Building 76</option>
+  <option value = "Building 77">Building 77</option>
+  <option value="Building 78">Building 78</option>
+  <option value="CEFIM">CEFIM</option>
+  <option value="Centenary Building">Centenary Building</option>
+  <option value="Chancellor">Chancellor</option>
+  <option value = "Chapel">Chapel</option>
+  <option value = "Chemistry Building">Chemistry Building</option>
+  <option value="Club Hall">Club Hall</option>
+  <option value="Communications Pathology Building">Communications Pathology Building</option>
+  <option value="Conference Centre">Conference Centre</option>
+  <option value="Department of Architecture:Boukunde">Department of Architecture:Boukunde</option>
+  <option value="Drama Building">Drama Building</option>
+  <option value="Economics And Management Science Building">Economics And Management Science Building</option>
+  <option value="Engineering 1">Engineering 1</option>
+  <option value="Engineering 2">Engineering 2</option>
+  <option value = "Engineering 3 Building">Engineering 3 Building</option>
+  <option value="FABI 1">FABI 1</option>
+  <option value="FABI 2">FABI 2</option>
+  <option value="Geography Building">Geography Building</option>
+  <option value="Graduate Centre">Graduate Centre</option>
+  <option value = "Heavy Machine Labs">Heavy Machine Labs</option>
+  <option value = "Humanities Building">Humanities Building</option>
+  <option value="Information Technology Building">Information Technology Building</option>
+  <option value="JJ Theron-Lesingsaal">JJ Theron Theron-Lesingsaal</option>
+  <option value="Kya Rosa">Kya Rosa</option>
+  <option value="Landbou-Anneks">Landbou-Anneks</option>
+  <option value="Law Building">Law Building</option>
+  <option value="Lier Theatre">Lier Theatre</option>
+  <option value="Marketing Services Buillding">Marketing Services Building</option>
+  <option value = "Maskerteater">Maskerteater</option>
+  <option value="Mathematics Building">Mathematics Building</option>
+  <option value="Mineral Sciences">Mineral Sciences</option>
+  <option value="Monastery Hall">Monastery Hall</option>
+  <option value="Music Building">Music Building</option>
+  <option value = "Natural Sciences Building 2">Natural Sciences Building 2</option>
+  <option value = "Natural Sciences 1 Building">Natural Sciences 1 Building</option>
+  <option value="Natural And Agricultural Sciences Building">Natural And Agricultural Sciences Building</option>
+  <option value="Old Agriculture Building">Old Agriculture Building</option>
+  <option value="Old Arts Building">Old Arts Building</option>
+  <option value="Old Chemistry Building">Old Chemistry Building</option>
+  <option value="Old College  House">"Old College House"</option>
+  <option value="Old Merensky Library">Old Merensky Library</option>
+  <option value="Plant Sciences Complex">Plant Sciences Complex</option>
+  <option value="Roosmaryn">Roosmaryn</option>
+  <option value="Sanlam Auditorium">Sanlam Auditorium</option>
+  <option value="Sci-Enza">Sci-Enza</option>
+  <option value="Stoneman Building">Stoneman Building</option>
+  <option value="Student Center Building">Student Center Building</option>
+  <option value = "Student Health Services">Student Health Services</option>
+  <option value="Technical Services Building">Technical Services Building</option>
+  <option value="Theology Building">Theology Building</option>
+  <option value="Thuto Building">Thuto Building</option>
+  <option value="Tukkiewerf">Tukkiewerf</option>
+  <option value = "UP Shop And Vida Cafe">UP Shop And Vida Cafe</option>
+  <option value = "Vetman Building">Vetman Building</option>
+  <option value="Visitors Reception">Visitors Reception</option>
+  <option value="Visual Arts">Visual Arts</option>
+  <option value="Zoology Building">Zoology Building</option>
+</select>
+
     <!-- JavaScript for Leaflet Map and Button Functionality -->
     <script src="project_demo_2_function.js"></script>
+    
     
 </body>
 </html>
