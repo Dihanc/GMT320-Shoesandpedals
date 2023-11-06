@@ -28,14 +28,14 @@ The Hatfield Campus Navigation Map uses the following plugins and libraries:
 ### Building Search:
 Use the dropdown menu to select a building, and the map will automatically navigate to the selected building's location.
 
-Bike Rack Statistics:
+### Bike Rack Statistics:
 You can view bike rack statistics for different areas on campus by using the bike rack chart provided on the map.
 
-Building Images:
+### Building Images:
 Click on a building on the map to view its image and gather more information.
 
-Support:
+### Support:
 If you encounter any issues or have questions about the Hatfield Campus Navigation Map, please open an issue in this repository.
 
-License:
+### License:
 © 2023 Shoes & Pedals. All rights reserved.
