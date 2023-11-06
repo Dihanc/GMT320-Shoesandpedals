@@ -18,47 +18,37 @@ var darkMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y
 });	
 
 //Create map
-var map = L.map('map',{layers: [osmMap]}).setView([-25.753889, 28.231111], 16);
+var map = L.map('map',{layers: [osmMap]}).setView([-25.754344, 28.227778], 16);
 
-//Reset view
-!function(t,e){
-	"function"==typeof define&&define.amd?define(["leaflet"],t):"object"==typeof exports&&(module.exports=t(require("leaflet"))),void 0!==e&&e.L&&(e.L.Control.ResetView=t(L))
-}
-(function(e){return ResetView=e.Control.extend({
-	options:{position:"topleft",title:"Reset view",	latlng:null,zoom:null},
-	onAdd:function(t){
-		const image = document.createElement('img');
-        image.src = './home_icon.png';
-
-		return this._map=t,
-		this._container=e.DomUtil.create("div","leaflet-control-resetview leaflet-bar leaflet-control"),
-		this._link=e.DomUtil.create("a","leaflet-bar-part leaflet-bar-part-single",this._container),
-
-		this._link.appendChild(e.DomUtil.create('span', 'leaflet-control-resetview-image')),
-
-
-        // Add a CSS class to the _link element to style the image
-        this._link.classList.add('leaflet-control-resetview-image'),
-
-		this._link.title=this.options.title,this._link.href="#",this._link.setAttribute("role","button"),
-		this._icon=e.DomUtil.create("span","leaflet-control-resetview-icon",this._link),
-		e.DomEvent.on(this._link,"click",this._resetView,this),
-		this._container
-	},
-		onRemove:function(t){e.DomEvent.off(this._link,"click",this._resetView,this)},
-		_resetView:function(t){this._map.setView(this.options.latlng,this.options.zoom)}
-}),
-e.control.resetView=function(t){return new ResetView(t)},ResetView},window
-);
-L.control.resetView({
-	position: "topleft",
-	title: "Reset view",
-	latlng: L.latLng([-25.753889, 28.231111]),
-	zoom: 16,
+//Building selector
+var geoList = L.control.geoJsonSelector(null, {
+	zoomToLayer: true
 }).addTo(map);
 
-//Find current location
-L.control.locate().addTo(map);
+geoList.on('selector:change', function(e) {
+	var jsonObj = $.parseJSON( JSON.stringify(e.layers[0].feature.properties) );
+	var html = 'Selection:<br /><table border="1">';
+	$.each(jsonObj, function(key, value){
+			html += '<tr>';
+			html += '<td>' + key.replace(":", " ") + '</td>';
+			html += '<td>' + value + '</td>';
+			html += '</tr>';
+	});
+	html += '</table>';
+
+	$('.selection').html(html);
+});
+
+map.addControl(function() {
+	var c = new L.Control({position:'bottomright'});
+	c.onAdd = function(map) {
+			return L.DomUtil.create('pre','selection');
+		};
+	return c;
+}());
+$.getJSON('cleanbuildings.geojson', function (json) {
+  geoList.reload(L.geoJson(json));
+});
 
 //WFS
 //Group layers for search function
@@ -67,18 +57,31 @@ let markersLayer = new L.LayerGroup();
 // specify your root URL...
 var owsrootUrl = "http://localhost:8080/geoserver/GMT320/ows";
 
-// Defining gates parameters
-var defaultGates = {
+// Defining cycling gates parameters
+var defaultGates1 = {
   service: "WFS",
   version: "1.0.0",
   request: "GetFeature",
-  typeName: "GMT320:gates",
+  typeName: "GMT320:cyclinggates",
   outputFormat: "application/json",//"text/javascript",
   format_options: "callback:getJson",
   SrsName: "EPSG:4326",
 };
-var parameters_gates = L.Util.extend(defaultGates);
-var URL_gates = owsrootUrl + L.Util.getParamString(parameters_gates);
+var parameters_gates1 = L.Util.extend(defaultGates1);
+var URL_gates1 = owsrootUrl + L.Util.getParamString(parameters_gates1);
+
+// Defining walking gates parameters
+var defaultGates2 = {
+	service: "WFS",
+	version: "1.0.0",
+	request: "GetFeature",
+	typeName: "GMT320:walkinggates",
+	outputFormat: "application/json",//"text/javascript",
+	format_options: "callback:getJson",
+	SrsName: "EPSG:4326",
+  };
+  var parameters_gates2 = L.Util.extend(defaultGates2);
+  var URL_gates2 = owsrootUrl + L.Util.getParamString(parameters_gates2);
 
 // Defining bike racks parameters
 var defaultBikeracks = {
@@ -93,7 +96,7 @@ var defaultBikeracks = {
 var parameters_bikeracks = L.Util.extend(defaultBikeracks);
 var URL_bikeracks = owsrootUrl + L.Util.getParamString(parameters_bikeracks);
 
-// Defining building parameters
+/*/ Defining building parameters
 var defaultBuildings = {
 	service: "WFS",
 	version: "1.0.0",
@@ -104,31 +107,35 @@ var defaultBuildings = {
 	SrsName: "EPSG:4326",
 };
 var parameters_buildings = L.Util.extend(defaultBuildings);
-var URL_buildings = owsrootUrl + L.Util.getParamString(parameters_buildings);
+var URL_buildings = owsrootUrl + L.Util.getParamString(parameters_buildings);*/
 
-// Create an empty layer for gates
-var gatesLayer = null;
-let gatesLayerGroup = new L.LayerGroup().addTo(map);
+// Create an empty layer for cycling gates
+var gatesLayer1 = null;
+let gatesLayerGroup1 = new L.LayerGroup().addTo(map);
+
+// Create an empty layer for walking gates
+var gatesLayer2 = null;
+let gatesLayerGroup2 = new L.LayerGroup().addTo(map);
 
 // Create an empty layer for bike racks
 var bikeracksLayer = null;
 let bikeracksLayerGroup = new L.LayerGroup().addTo(map);
 
-// Create an empty layer for buildings
+/*/ Create an empty layer for buildings
 var buildingsLayer = null;
-let buildingsLayerGroup = new L.LayerGroup().addTo(map);
+let buildingsLayerGroup = new L.LayerGroup().addTo(map);*/
 
 // WFS Ajax requests
-// this is the ajax request, we are using the jsonp option. --> GATES
+// this is the ajax request, we are using the jsonp option. --> CYCLING GATES
 $.ajax({
-	url: URL_gates,
+	url: URL_gates2,
 	dataType: "json",
 	jsonpCallback: "getJson",
 
 	//In the event of success...
 	success: function (response) {
 		console.log(response);
-		gatesLayer = L.geoJson(response, {
+		gatesLayer2 = L.geoJson(response, {
 			style: function (feature) {
 				return {
 					stroke: false,
@@ -160,7 +167,61 @@ $.ajax({
 				.openPopup();
 
 				markersLayer.addLayer(marker);
-				gatesLayerGroup.addLayer(marker);
+				gatesLayerGroup2.addLayer(marker);
+				// return marker;
+			},
+			onEachFeature: function (feature, featureLayer) {
+				featureLayer.bindPopup(feature.properties.gate_number_or_name);
+			},
+		});
+	},
+	error: function(xhr){
+        console.log('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
+    }
+});
+
+// this is the ajax request, we are using the jsonp option. --> WALKING GATES
+$.ajax({
+	url: URL_gates1,
+	dataType: "json",
+	jsonpCallback: "getJson",
+
+	//In the event of success...
+	success: function (response) {
+		console.log(response);
+		gatesLayer1 = L.geoJson(response, {
+			style: function (feature) {
+				return {
+					stroke: false,
+                    fillColor: '#36ff46',
+                    fillOpacity: 50
+				};
+			},
+			pointToLayer: function (feature, latlng) {
+
+				//console.log(feature.properties);
+
+				const popupInfo = `
+					<b>Gate name: </b>${feature.properties.gate_number_or_name} <br>
+					<b>Accessible on foot: </b>${feature.properties.walking_student_accessible} <br>
+					<b>Accessible on bicycle: </b>${feature.properties.cycling_student_accessible} <br>
+				`;
+
+				const imageIcon = new L.Icon({
+					iconUrl: 'http://127.0.0.1:5500/gates_legend2.png',
+					iconSize: [22,22],
+					iconAnchor: [11, 5],
+				});
+
+				let marker = new L.marker(latlng, {
+					icon: imageIcon,
+					title: feature.properties.gate_number_or_name,
+				})
+				.bindPopup(popupInfo)
+				.openPopup();
+
+				markersLayer.addLayer(marker);
+				gatesLayerGroup1.addLayer(marker);
 				// return marker;
 			},
 			onEachFeature: function (feature, featureLayer) {
@@ -217,39 +278,6 @@ $.ajax({
         console.log('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
     }
 });
-
-// this is the ajax request, we are using the jsonp option. --> BUILDINGS
-$.ajax({
-	url: URL_buildings,
-	dataType: "json",
-	jsonpCallback: "getJson",
-
-	//In the event of success...
-	success: function (response) {
-		console.log(response);
-
-		buildingsLayer = L.geoJson(response, {
-			style: function (feature) {
-				return {
-					stroke: '#232323',
-                    fillColor: '#fff7b7',
-					color: '#252525',
-					weight: 1,
-                    fillOpacity: 1,
-				};
-			},
-			onEachFeature: function (feature, marker) {
-				var popupText = "<b>Building name: </b>" + feature.properties.name;
-				marker.bindPopup(popupText);
-				//marker.bindPopup('<b>Building name: </b>${feature.properties.name}');
-			},
-		});
-		buildingsLayerGroup.addLayer(buildingsLayer);
-	},
-	error: function(xhr){
-        console.log('Request Status: ' + xhr.status + ' Status Text: ' + xhr.statusText + ' ' + xhr.responseText);
-    }
-});
               
 //Base layer definition
 var baseMaps = {
@@ -259,41 +287,85 @@ var baseMaps = {
 };
 
 var overlayMaps = {
-	"Gates": gatesLayerGroup,
-	"Buildings": buildingsLayerGroup,
-	"Bike Racks": bikeracksLayerGroup
+	'<div class="overlay-map-entry"><img src="http://127.0.0.1:5500/gates_legend2.png" class="overlay-map-image" /> Cycling Gate</div>': gatesLayerGroup1,
+	'<div class="overlay-map-entry"><img src="http://127.0.0.1:5500/gates_legend2.png" class="overlay-map-image" /> Walking Gate</div>': gatesLayerGroup2,
+	'<div class="overlay-map-entry"><img src="http://127.0.0.1:5500/bikeracks_legend2.png" class="overlay-map-image" /> Bike Rack</div>': bikeracksLayerGroup
 };
 
-var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+map.addControl(L.control.zoom({position:'topright'}));
+
+//Reset view
+!function(t,e){
+	"function"==typeof define&&define.amd?define(["leaflet"],t):"object"==typeof exports&&(module.exports=t(require("leaflet"))),void 0!==e&&e.L&&(e.L.Control.ResetView=t(L))
+}
+(function(e){return ResetView=e.Control.extend({
+	options:{position:"topright",title:"Reset view",	latlng:null,zoom:null},
+	onAdd:function(t){
+		const image = document.createElement('img');
+        image.src = './home_icon.png';
+
+		return this._map=t,
+		this._container=e.DomUtil.create("div","leaflet-control-resetview leaflet-bar leaflet-control"),
+		this._link=e.DomUtil.create("a","leaflet-bar-part leaflet-bar-part-single",this._container),
+
+		this._link.appendChild(e.DomUtil.create('span', 'leaflet-control-resetview-image')),
+
+
+        // Add a CSS class to the _link element to style the image
+        this._link.classList.add('leaflet-control-resetview-image'),
+
+		this._link.title=this.options.title,this._link.href="#",this._link.setAttribute("role","button"),
+		this._icon=e.DomUtil.create("span","leaflet-control-resetview-icon",this._link),
+		e.DomEvent.on(this._link,"click",this._resetView,this),
+		this._container
+	},
+		onRemove:function(t){e.DomEvent.off(this._link,"click",this._resetView,this)},
+		_resetView:function(t){this._map.setView(this.options.latlng,this.options.zoom)}
+}),
+e.control.resetView=function(t){return new ResetView(t)},ResetView},window
+);
+L.control.resetView({
+	position: "topright",
+	title: "Reset view",
+	latlng: L.latLng([-25.754344, 28.227778]),
+	zoom: 16,
+}).addTo(map);
+
+//Find current location
+L.control.locate({
+	position: 'topright',
+}).addTo(map);
 
 // Add a scale bar to the map.
-var scaleBar = L.control.scale({position: 'bottomleft'});
+var scaleBar = L.control.scale({position: 'bottomright'});
 map.addControl(scaleBar);
 
 // Style the scale bar using CSS
-scaleBar.getContainer().style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+scaleBar.getContainer().style.backgroundColor = 'rgba(255, 255, 255, 0.5)';
 scaleBar.getContainer().style.color = 'black';
-scaleBar.getContainer().style.fontSize = '14px';
-scaleBar.getContainer().style.fontWeight = 'bold';
+scaleBar.getContainer().style.fontSize = '10px';
 
 // Add a north arrow to the map
-var northArrow = L.control({position: 'bottomleft'});
+var northArrow = L.control({position: 'bottomright'});
 northArrow.onAdd = function(map) {
     var div = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
     div.style.backgroundColor = 'white';
     div.style.border = 'solid black 1px';
     div.style.borderRadius = '50%';
-	div.style.width = '60px';
-    div.style.height = '60px';
+	div.style.width = '50px';
+    div.style.height = '50px';
     div.style.cursor = 'pointer';
     div.onclick = function() {
         map.setView([-25.753889, 28.231111], 16);
     };
     var arrow = document.createElement('img');
     arrow.src = 'northarrow_image.jpeg';
-    arrow.style.width = '45px';
-    arrow.style.height = '45px';
+    arrow.style.width = '35px';
+    arrow.style.height = '35px';
     arrow.style.margin = '5px';
+	arrow.style.borderRadius = '10%';
     div.appendChild(arrow);
     return div;
 };
@@ -301,7 +373,7 @@ northArrow.addTo(map);
 
 //Search bar
 var controlSearch = new L.Control.Search({
-	position: "topleft",
+	position: "topright",
 	layer: markersLayer,
 	initial: false,
 	zoom: 20,
@@ -309,44 +381,93 @@ var controlSearch = new L.Control.Search({
 });
 map.addControl(controlSearch);
 
-// Create an HTML element for the legend
-var legend = L.control({
-	position: 'topright',
-	width: 200,
- });
 
-// Define the legend content and style
-legend.onAdd = function (map) {
-    var div = L.DomUtil.create('div', 'info legend');
-    var labels = [];
-    var categories = ['Gate', 'Building', 'Bike Rack'];
 
-    // Add legend labels and corresponding colors
-    for (var i = 0; i < categories.length; i++) {
-        div.innerHTML +=
-			'<div class="legend-item">' +
-				'<img class="legend-image" src="' + getImageSource(categories[i]) + '">' +
-				'<span class="legend-label">' + categories[i] + '</span>' +
-			'</div>';
-    }
 
-    return div;
-};
+//---------------------------BUILDINGS LOOKUP
+// look up for building names
 
-// Function to set the color for legend items
-function getImageSource(category) {
-    // Define colors for each category
-    switch (category) {
-        case 'Gate':
-            return 'gates_legend2.png';
-        case 'Building':
-            return 'building_legend.png';
-        case 'Bike Rack':
-            return 'bikeracks_legend2.png';
-        default:
-            return 'company_logo.png';
-    }
-}
+// Add an event listener to the dropdown select element
+document.getElementById("building_selector").addEventListener("change", function () {
+    // Get the selected building name
+    var selectedBuilding = this.value;
 
-// Add the legend to the map
-legend.addTo(map);
+	var  building_lookup = {"AE Auditorium And Annex":"/img/AE Auditorium And Annex - Copy-1 - Copy.png",
+		"Administration": "/img/Administration-1.png",
+		"Amphitheatre And Musaion":"/img/Amphitheater And Musaion-1 - Copy.png",
+		"Aula And Rautenbach Hall":"/img/Aula And Rautenbach Hall-1.png",
+		"Bateman Building":"/img/Bateman Building-1.png",
+		"Botany Building":"/img/Botany-1.png",
+		"Building 5":"/img/Building 5-1.png",
+		"Building 70":"/img/Building 70-1.png",
+		"Building 71":"/img/Building 71-1.png",
+		"Building 72":"/img/Building 72-1.png",
+		"Building 73":"/img/Building 73-1.png",
+		"Building 75":"/img/Building 74-1.png",
+		"Building 75B":"/img/Building 75-1.png",
+		"Building 76":"/img/Building 76-1.png",
+		"Building 77":"/img/Building 77-1.png",
+		"Building 78":"/img/Building 78-1.png",
+		"CEFIM":"/img/CEFIM-1.png",
+		"Centenary Building":"img/Centenary Building-1.png",
+		"Chancellors":"/img/Chancellor-1.png",
+		"Chapel":"/img/Chapel-1.png",
+		"Chemistry Building":"/img/Chemistry building-1.png",
+		"Club Hall":"/img/Club hall-1.png",
+		"Communication Pathology Building":"/img/Communications pathology-1.png",
+		"Conference Centre":"img/Conference centre-1.png",
+		"Department of Architecture":"/img/Building science-1.png",
+		"Drama Building":"/img/Drama-1.png",
+		"Economics And Management Science Building":"/img/Economics mangmnt-1.png",
+		"Engineering 1":"/img/Engineering 1-1.png",
+		"Engineering 2": "/img/Engineering 2.png",
+		"Engineering 3":"/img/Engineering 3 Building.png",
+		"FABI 1":"/img/FABI 1.png",
+		"FABI 2":"/img/FABI 1.png",
+		"Geography Building":"/img/Geography Building-1.png",
+		"Graduate centre":"/img/Graduate centre-1.png",
+		"Heavy Machine Labs":"/img/Heavy Machine Labs-1.png",
+		"Humanities Building":"/img/Humanities Building.png",
+		"Information Technology Building":"/img/Information Technology Building.png",
+		"JJ Theron-Lesingsaal":"/img/JJ Theron-Lesingsaal.png",
+		"Kya Rosa":"/img/Kya Rosa.png",
+		"Landbou-Anneks":"/img/Landbou-Anneks.png",
+		"Law Building:":"/img/Law Building.png",
+		"Lier Theatre":"/img/Lier Theatre.png",
+		"Marketing Services Building":"/img/Marketing Services Building.png",
+		"Maskerteater":"/img/Maskerteater.png",
+		"Mathematics Building":"/img/Mathematics Building.png",
+		"Mineral Sciences":"/img/Mineral sciences-1.png/",
+		"Monastery Hall":"/img/Monastery Hall-1.png",
+		"Music Building":"/img/Music Building-1.png",
+		"Natural Sciences Building 2":"/img/Natural Sciences Building 2-1.png",
+		"Natural Sciences 1 Building":"/img/Natural Sciences 1 Building-1.png",
+		"Natural And Agricultural Sciences Building":"/img/Natural And Agricultural Sciences Building.png",
+		"Old Agriculture Building":"/img/Old Agricultural building.png",
+		"Old Arts Building":"/img/Old Arts Building.png",
+		"Old Chemistry Building":"/img/Old Chemistry Building.png",
+		"Old Merensky Building": "/img/Old Merensky Building.png",
+		"Plant Sciences Complex":"/img/Plant science-1.png",
+		"Roosmaryn":"/img/Roosmaryn-1.png",
+		"Sanlam Auditorium":"/img/Sanlam Auditorium-1.png",
+		"Sci-Enza":"img/SCIENZA-1.png",
+		"Stoneman Building":"/img/STONEMAN-1.png",
+		"Student Centre Building":"/img/Student centre-1.png",
+		"Student Health Services":"/img/Student health-1.png",
+		"Student Service Center Building":"/img/Student Service Center Building-1.png",
+		"Technical Services Building":"/img/Technical services-1.png/",
+		"Theology Building":"/img/Theology-1.png",
+		"Thuto":"/img/Thuto-1.png",
+		"Tukkiewerf":"/img/TUKKIEWERF-1.png",
+		"UP Shop And Vida Cafe":"/img/UP Shop and Vida cafe-1.png",
+		"Vetman Building":"/img/Vetman building-1.png",
+		"Visitors Reception":"/img/Visitors reception-1.png",
+		"Visual Arts":"/img/Visual arts-1.png",
+		"zoology Building":"/img/Zoology-1.png" 
+	};
+	// Get the corresponding image path
+	var imagePath = building_lookup[selectedBuilding];
+
+	// Update the image source in the div
+	document.getElementById("buildingImage").src = imagePath;
+});
