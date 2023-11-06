@@ -25,7 +25,7 @@ The Hatfield Campus Navigation Map uses the following plugins and libraries:
 - [leaflet-geojson-selector.css](https://github.com/lyzadanger/leaflet-geojson-selector): CSS styles for the Leaflet GeoJSON selector.
 - [leaflet-search.src.css](https://github.com/stefanocudini/leaflet-search): CSS styles for the Leaflet Search plugin.
 
-Building Search:
+### Building Search:
 Use the dropdown menu to select a building, and the map will automatically navigate to the selected building's location.
 
 Bike Rack Statistics:
