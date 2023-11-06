@@ -35,11 +35,11 @@ body {
 #map-container {
     display: flex;
     flex: 1;
-    height: 680px;
+    height: 671px;
 }
 #map {
     flex: 70%;
-    height: 680px;
+    height: 671px;
     border-right: 2px solid #000000;
 }
 
@@ -76,39 +76,6 @@ footer {
     color:cyan;
 }
 
-/* CSS for the legend */
-.info.legend {
-    background: white;
-    padding: 10px;
-    border: 2px solid #000000;
-    border-radius: 5px;
-}
-
-.legend-item {
-    margin-bottom: 5px;
-    display: flex;
-    align-items: center;
-}
-
-/* Define the color for the legend item markers */
-.legend-image {
-    width: 25px;
-    height: 25px;
-    margin-right: 8px;
-}
-
-.legend-label {
-    flex-grow: 1;
-    text-align: left;
-    font-size: 13px;
-}
-
-.leaflet-control-custom {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 /* Home button */
 .leaflet-control-resetview-image {
     background-image: url('./home_icon.png');
@@ -117,4 +84,95 @@ footer {
     background-position: center;
     width: 20px;
     height: 20px;
+}
+
+/* Buildings search panel */
+table {
+    border-collapse: collapse;
+}
+
+table {
+   border-collapse: collapse;
+   width: 100%;
+}
+
+th, td {
+   text-align: left;
+   padding: 4px;
+}
+tr:nth-child(even) {background-color: #f2f2f2;}
+
+#desc {
+   float: left;
+   margin-bottom: 1em;
+   position: relative;
+   white-space:nowrap;
+   font-size:1em;
+}
+
+.selection {
+   min-width: 200px;
+   padding: 4px;
+   border-radius: 4px;
+   box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+   clear: both;
+   background: #fefefe;
+   white-space: nowrap;
+}
+ul {
+   font-size:.85em;
+   margin:0;
+   padding:0;
+}
+li {
+   margin:0 0 2px 18px;
+}
+#copy {
+   position:fixed;
+   z-index:1000;
+   right:150px;
+   top:-8px;
+   font-size:.85em;
+   padding:8px 8px 2px 8px;
+   background: #323b44;
+   border: 2px solid #737c85;		
+   border-radius:.7em;
+   opacity: 0.9;
+   box-shadow:0 0 8px #5f7182;
+   color:#eee
+}
+#copy a {
+   color:#ccc;
+   text-decoration:none
+}
+#copy a:hover {
+   color:#fff
+}
+#ribbon {
+   position: absolute;
+   top: 0;
+   right: 0;
+   border: 0;
+   filter: alpha(opacity=80);
+   -khtml-opacity: .8;
+   -moz-opacity: .8;
+   opacity: .8;		
+}
+.contents {
+   float:left;
+   margin:0 2em 2em 0;
+}
+#comments {
+   clear:both;
+}
+
+/* Legend */
+.overlay-map-entry {
+    display: flex;
+    align-items: center;
+}
+
+.overlay-map-image {
+    width: 20px;
+    height: 20px; /* Adjust the margin as needed for spacing */
 }
