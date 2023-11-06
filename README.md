@@ -1,8 +1,12 @@
 # GMT320-Shoesandpedals
+![Image alt text](company_logo.png)
 
 # Hatfield Campus Navigation Map
 
 Welcome to the Hatfield Campus Navigation Map developed by Shoes & Pedals. This map provides you with an interactive experience to navigate the Hatfield Campus at University of Pretoria and locate various buildings and points of interest. You can search for specific buildings, view bike rack statistics, and access additional information about the campus.
+
+## Web-site link
+https://u21652288.wixsite.com/shoesandpedals
 
 ## Features
 
