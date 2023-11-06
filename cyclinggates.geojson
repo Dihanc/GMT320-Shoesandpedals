@@ -1,0 +1,13 @@
+{
+"type": "FeatureCollection",
+"name": "cyclinggates",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "ogc_fid": 2, "fid": 4, "gate_number_or_name": "Main Entrance ", "walking_student_accessible": true, "cycling_student_accessible": true }, "geometry": { "type": "Point", "coordinates": [ 28.231060908814662, -25.755943297025819 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 5, "fid": 10, "gate_number_or_name": "Lunnon Road Entrance ", "walking_student_accessible": true, "cycling_student_accessible": true }, "geometry": { "type": "Point", "coordinates": [ 28.235800877918596, -25.756174075969792 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 8, "fid": 16, "gate_number_or_name": "Centenary Entrance ", "walking_student_accessible": true, "cycling_student_accessible": true }, "geometry": { "type": "Point", "coordinates": [ 28.23259395, -25.75383696 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 10, "fid": 20, "gate_number_or_name": "Prospect Street Entrance ", "walking_student_accessible": true, "cycling_student_accessible": true }, "geometry": { "type": "Point", "coordinates": [ 28.2324236, -25.75238745 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 15, "fid": 30, "gate_number_or_name": "University Road Entrance ", "walking_student_accessible": true, "cycling_student_accessible": true }, "geometry": { "type": "Point", "coordinates": [ 28.226969767736495, -25.754602779541528 ] } },
+{ "type": "Feature", "properties": { "ogc_fid": 18, "fid": 38, "gate_number_or_name": "South Campus Main Entrance (Tengo Road)", "walking_student_accessible": true, "cycling_student_accessible": true }, "geometry": { "type": "Point", "coordinates": [ 28.225289183936937, -25.756543827854664 ] } }
+]
+}
