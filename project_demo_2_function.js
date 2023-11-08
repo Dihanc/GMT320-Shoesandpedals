@@ -1,3 +1,94 @@
+/// TEMP
+document.getElementById("building_selector").addEventListener("change", function() {
+//console.log("HERE!!");
+	var selectedBuilding_e= document.getElementById("building_selector");
+	var selectedBuilding = selectedBuilding_e.options[selectedBuilding_e.selectedIndex].value;
+	//console.log(selectedBuilding);
+
+	var  building_lookup = {"AE Auditorium And Annex":"/img/AE Auditorium And Annex - Copy-1 - Copy.png",
+		"Administration": "/img/Administration-1.png",
+		"Amphitheatre And Musaion":"/img/Amphitheater And Musaion-1 - Copy.png",
+		"Aula And Rautenbach Hall":"/img/Aula And Rautenbach Hall-1.png",
+		"Bateman Building":"/img/Bateman Building-1.png",
+		"Botany Building":"/img/Botany-1.png",
+		"Building 5":"/img/Building 5-1.png",
+		"Building 70":"/img/Building 70-1.png",
+		"Building 71":"/img/Building 71-1.png",
+		"Building 72":"/img/Building 72-1.png",
+		"Building 73":"/img/Building 73-1.png",
+		"Building 75":"/img/Building 74-1.png",
+		"Building 75B":"/img/Building 75-1.png",
+		"Building 76":"/img/Building 76-1.png",
+		"Building 77":"/img/Building 77-1.png",
+		"Building 78":"/img/Building 78-1.png",
+		"CEFIM":"/img/CEFIM-1.png",
+		"Centenary Building":"img/Centenary Building-1.png",
+		"Chancellors":"/img/Chancellor-1.png",
+		"Chapel":"/img/Chapel-1.png",
+		"Chemistry Building":"/img/Chemistry building-1.png",
+		"Club Hall":"/img/Club hall-1.png",
+		"Communication Pathology Building":"/img/Communications pathology-1.png",
+		"Conference Centre":"img/Conference centre-1.png",
+		//"Department of Architecture":"/img/Building science-1.png",
+		"Drama Building":"/img/Drama-1.png",
+		"Economics And Management Science Building":"/img/Economics mangmnt-1.png",
+		"Engineering 1":"/img/Engineering 1-1.png",
+		"Engineering 2": "/img/Engineering 2.png",
+		"Engineering 3":"/img/Engineering 3 Building.png",
+		"FABI 1":"/img/FABI 1.png",
+		"FABI 2":"/img/FABI 1.png",
+		"Geography Building":"/img/Geography Building-1.png",
+		"Graduate centre":"/img/Graduate centre-1.png",
+		"Heavy Machine Labs":"/img/Heavy Machine Labs-1.png",
+		"Humanities Building":"/img/Humanities Building.png",
+		"Information Technology Building":"/img/Information Technology Building.png",
+		"JJ Theron-Lesingsaal":"/img/JJ Theron-Lesingsaal.png",
+		"Kya Rosa":"/img/Kya Rosa.png",
+		"Landbou-Anneks":"/img/Landbou-Anneks.png",
+		"Law Building:":"/img/Law Building.png",
+		"Lier Theatre":"/img/Lier Theatre.png",
+		"Marketing Services Building":"/img/Marketing Services Building.png",
+		"Maskerteater":"/img/Maskerteater.png",
+		"Mathematics Building":"/img/Mathematics Building.png",
+		"Mineral Sciences":"/img/Mineral sciences-1.png/",
+		"Monastery Hall":"/img/Monastery Hall-1.png",
+		"Music Building":"/img/Music Building-1.png",
+		"Natural Sciences Building 2":"/img/Natural Sciences Building 2-1.png",
+		"Natural Sciences 1 Building":"/img/Natural Sciences 1 Building-1.png",
+		"Natural And Agricultural Sciences Building":"/img/Natural And Agricultural Sciences Building.png",
+		"Old Agriculture Building":"/img/Old Agricultural building.png",
+		"Old Arts Building":"/img/Old Arts Building.png",
+		"Old Chemistry Building":"/img/Old Chemistry Building.png",
+		"Old Merensky Building": "/img/Old Merensky Building.png",
+		"Plant Sciences Complex":"/img/Plant science-1.png",
+		"Roosmaryn":"/img/Roosmaryn-1.png",
+		"Sanlam Auditorium":"/img/Sanlam Auditorium-1.png",
+		"Sci-Enza":"img/SCIENZA-1.png",
+		"Stoneman Building":"/img/STONEMAN-1.png",
+		"Student Centre Building":"/img/Student centre-1.png",
+		"Student Health Services":"/img/Student health-1.png",
+		"Student Service Center Building":"/img/Student Service Center Building-1.png",
+		"Technical Services Building":"/img/Technical services-1.png/",
+		"Theology Building":"/img/Theology-1.png",
+		"Thuto":"/img/Thuto-1.png",
+		"Tukkiewerf":"/img/TUKKIEWERF-1.png",
+		"UP Shop And Vida Cafe":"/img/UP Shop and Vida cafe-1.png",
+		"Vetman Building":"/img/Vetman building-1.png",
+		"Visitors Reception":"/img/Visitors reception-1.png",
+		"Visual Arts":"/img/Visual arts-1.png",
+		"zoology Building":"/img/Zoology-1.png" 
+	};
+	// Get the corresponding image path
+	var imagePath = building_lookup[selectedBuilding];
+	//var imagePath = building_lookup["zoology Building"];
+	//console.log(imagePath);
+	// Update the image source in the div
+	document.getElementById("buildingImage").src = imagePath});
+// ---------------------
+
+
+
+
 //OSM tiles attribution and URL
 var osmLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
 var osmURL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -363,94 +454,3 @@ var controlSearch = new L.Control.Search({
 	marker: false,
 });
 map.addControl(controlSearch);
-
-
-
-
-//---------------------------BUILDINGS LOOKUP
-// look up for building names
-
-// Add an event listener to the dropdown select element
-document.getElementById("building_selector").addEventListener("change", function () {
-    // Get the selected building name
-    var selectedBuilding = this.value;
-
-	var  building_lookup = {"AE Auditorium And Annex":"/img/AE Auditorium And Annex - Copy-1 - Copy.png",
-		"Administration": "/img/Administration-1.png",
-		"Amphitheatre And Musaion":"/img/Amphitheater And Musaion-1 - Copy.png",
-		"Aula And Rautenbach Hall":"/img/Aula And Rautenbach Hall-1.png",
-		"Bateman Building":"/img/Bateman Building-1.png",
-		"Botany Building":"/img/Botany-1.png",
-		"Building 5":"/img/Building 5-1.png",
-		"Building 70":"/img/Building 70-1.png",
-		"Building 71":"/img/Building 71-1.png",
-		"Building 72":"/img/Building 72-1.png",
-		"Building 73":"/img/Building 73-1.png",
-		"Building 75":"/img/Building 74-1.png",
-		"Building 75B":"/img/Building 75-1.png",
-		"Building 76":"/img/Building 76-1.png",
-		"Building 77":"/img/Building 77-1.png",
-		"Building 78":"/img/Building 78-1.png",
-		"CEFIM":"/img/CEFIM-1.png",
-		"Centenary Building":"img/Centenary Building-1.png",
-		"Chancellors":"/img/Chancellor-1.png",
-		"Chapel":"/img/Chapel-1.png",
-		"Chemistry Building":"/img/Chemistry building-1.png",
-		"Club Hall":"/img/Club hall-1.png",
-		"Communication Pathology Building":"/img/Communications pathology-1.png",
-		"Conference Centre":"img/Conference centre-1.png",
-		"Department of Architecture":"/img/Building science-1.png",
-		"Drama Building":"/img/Drama-1.png",
-		"Economics And Management Science Building":"/img/Economics mangmnt-1.png",
-		"Engineering 1":"/img/Engineering 1-1.png",
-		"Engineering 2": "/img/Engineering 2.png",
-		"Engineering 3":"/img/Engineering 3 Building.png",
-		"FABI 1":"/img/FABI 1.png",
-		"FABI 2":"/img/FABI 1.png",
-		"Geography Building":"/img/Geography Building-1.png",
-		"Graduate centre":"/img/Graduate centre-1.png",
-		"Heavy Machine Labs":"/img/Heavy Machine Labs-1.png",
-		"Humanities Building":"/img/Humanities Building.png",
-		"Information Technology Building":"/img/Information Technology Building.png",
-		"JJ Theron-Lesingsaal":"/img/JJ Theron-Lesingsaal.png",
-		"Kya Rosa":"/img/Kya Rosa.png",
-		"Landbou-Anneks":"/img/Landbou-Anneks.png",
-		"Law Building:":"/img/Law Building.png",
-		"Lier Theatre":"/img/Lier Theatre.png",
-		"Marketing Services Building":"/img/Marketing Services Building.png",
-		"Maskerteater":"/img/Maskerteater.png",
-		"Mathematics Building":"/img/Mathematics Building.png",
-		"Mineral Sciences":"/img/Mineral sciences-1.png/",
-		"Monastery Hall":"/img/Monastery Hall-1.png",
-		"Music Building":"/img/Music Building-1.png",
-		"Natural Sciences Building 2":"/img/Natural Sciences Building 2-1.png",
-		"Natural Sciences 1 Building":"/img/Natural Sciences 1 Building-1.png",
-		"Natural And Agricultural Sciences Building":"/img/Natural And Agricultural Sciences Building.png",
-		"Old Agriculture Building":"/img/Old Agricultural building.png",
-		"Old Arts Building":"/img/Old Arts Building.png",
-		"Old Chemistry Building":"/img/Old Chemistry Building.png",
-		"Old Merensky Building": "/img/Old Merensky Building.png",
-		"Plant Sciences Complex":"/img/Plant science-1.png",
-		"Roosmaryn":"/img/Roosmaryn-1.png",
-		"Sanlam Auditorium":"/img/Sanlam Auditorium-1.png",
-		"Sci-Enza":"img/SCIENZA-1.png",
-		"Stoneman Building":"/img/STONEMAN-1.png",
-		"Student Centre Building":"/img/Student centre-1.png",
-		"Student Health Services":"/img/Student health-1.png",
-		"Student Service Center Building":"/img/Student Service Center Building-1.png",
-		"Technical Services Building":"/img/Technical services-1.png/",
-		"Theology Building":"/img/Theology-1.png",
-		"Thuto":"/img/Thuto-1.png",
-		"Tukkiewerf":"/img/TUKKIEWERF-1.png",
-		"UP Shop And Vida Cafe":"/img/UP Shop and Vida cafe-1.png",
-		"Vetman Building":"/img/Vetman building-1.png",
-		"Visitors Reception":"/img/Visitors reception-1.png",
-		"Visual Arts":"/img/Visual arts-1.png",
-		"zoology Building":"/img/Zoology-1.png" 
-	};
-	// Get the corresponding image path
-	var imagePath = building_lookup[selectedBuilding];
-
-	// Update the image source in the div
-	document.getElementById("buildingImage").src = imagePath;
-});
