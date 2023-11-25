@@ -1,5 +1,7 @@
 # GMT320-Shoesandpedals
-![Image alt text](company_logo.png)
+<p align="center">
+  <img src="/company_logo.png" alt="Dihan Calitz">
+</p>
 
 # Hatfield Campus Navigation Map
 
